@@ -5,13 +5,17 @@ interface Props {
   babyId: number;
 }
 
-const SummaryDashboard: React.FC<Props> = ({ babyId }) => {
-  const [summary, setSummary] = useState<any>(null);
-  const today = new Date().toISOString().split('T')[0];
-
-  useEffect(() => {
-    getBabySummary(babyId, today).then(res => setSummary(res.data));
-  }, [babyId]);
+const SummaryDashboard: React.FC = () => {
+    const [summary, setSummary] = useState<any>(null);
+    const babyId = parseInt(localStorage.getItem('babyId') || '1');
+    const today = new Date().toISOString().split('T')[0];
+  
+    useEffect(() => {
+      getBabySummary(babyId, today).then(res => setSummary(res.data));
+    }, [babyId]);
+    ...
+  };
+  
 
   if (!summary) return <p>Loading summary...</p>;
 
@@ -42,3 +46,5 @@ const SummaryDashboard: React.FC<Props> = ({ babyId }) => {
 };
 
 export default SummaryDashboard;
+
+

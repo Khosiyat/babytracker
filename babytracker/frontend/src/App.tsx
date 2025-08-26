@@ -2,6 +2,11 @@ import React from 'react';
 import FeedingForm from './components/FeedingForm';
 import FoodForm from './components/FoodForm';
 import SummaryDashboard from './components/SummaryDashboard';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+<ToastContainer />
+
 
 const App: React.FC = () => {
   const babyId = 1; // Hardcoded for now
