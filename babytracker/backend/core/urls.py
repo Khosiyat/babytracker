@@ -9,4 +9,5 @@ router.register(r'feedings', FeedingRecordViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('baby/<int:baby_id>/summary/', baby_daily_summary),
+    
 ]
