@@ -30,3 +30,27 @@ def check_daily_goal(sender, instance, created, **kwargs):
             [caregiver.email],
             fail_silently=True
         )
+
+
+import firebase_admin
+from firebase_admin import credentials, messaging
+
+cred = credentials.Certificate('/path/to/firebase_service_account.json')
+firebase_admin.initialize_app(cred)
+
+def send_push_notification(token, title, body):
+    message = messaging.Message(
+        notification=messaging.Notification(title=title, body=body),
+        token=token,
+    )
+    response = messaging.send(message)
+    return response
+
+# Inside your signal where you have caregivers:
+for caregiver in baby.caregivers.all():
+    if caregiver.fcm_token:  # store this in your model when user registers device
+        send_push_notification(
+            caregiver.fcm_token,
+            'Daily Feeding Summary',
+            message,
+        )
