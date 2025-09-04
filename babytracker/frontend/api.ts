@@ -1,20 +1,33 @@
-import axios from 'axios';
+// frontend/src/api.ts
+import axios from "axios";
 
-const API_BASE = 'http://localhost:8000/api'; // Change in production
+const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:8000/api";
 
-// Auto-include token if available
-const token = localStorage.getItem('token');
-if (token) {
-  axios.defaults.headers.common['Authorization'] = `Token ${token}`;
-}
+// Create Axios instance
+const api = axios.create({
+  baseURL: API_BASE,
+});
 
-// API calls
-export const signup = (data: any) => axios.post(`${API_BASE}/signup/`, data);
-export const login = (data: any) => axios.post(`${API_BASE}/token/`, data);
+// Attach token automatically before each request
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token && config.headers) {
+    config.headers.Authorization = `Bearer ${token}`; // Use Bearer for JWT
+  }
+  return config;
+});
 
-export const fetchFoodItems = () => axios.get(`${API_BASE}/food-items/`);
-export const addCustomFoodItem = (data: any) => axios.post(`${API_BASE}/food-items/`, data);
-export const logFeeding = (data: any) => axios.post(`${API_BASE}/feedings/`, data);
+// ---------- Auth ----------
+export const signup = (data: any) => api.post("/auth/signup/", data);
+export const login = (data: any) => api.post("/auth/token/", data);
+
+// ---------- Food Items ----------
+export const fetchFoodItems = () => api.get("/food-items/");
+export const addCustomFoodItem = (data: any) => api.post("/food-items/custom/", data);
+
+// ---------- Feeding ----------
+export const logFeeding = (data: any) => api.post("/feedings/", data);
 export const getBabySummary = (babyId: number, date: string) =>
+  api.get(`/baby/${babyId}/summary/?date=${date}`);
 
-  axios.get(`${API_BASE}/baby/${babyId}/summary/?date=${date}`);
+export default api;
