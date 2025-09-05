@@ -35,3 +35,19 @@ class FeedingRecord(models.Model):
         self.calories = self.amount_ml * self.food_item.calories_per_100ml / 100
         self.protein = self.amount_ml * self.food_item.protein_per_100ml / 100
         super().save(*args, **kwargs)
+
+class FoodItem(models.Model):
+    name = models.CharField(max_length=100)
+    calories_per_100ml = models.FloatField()
+    protein_per_100ml = models.FloatField()
+    
+    fat_per_100ml = models.FloatField(default=0.0)
+    carbs_per_100ml = models.FloatField(default=0.0)
+    vitamin_a_per_100ml = models.FloatField(default=0.0)
+    vitamin_c_per_100ml = models.FloatField(default=0.0)
+    # Add more vitamins/minerals as needed
+    
+    is_custom = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return self.name
