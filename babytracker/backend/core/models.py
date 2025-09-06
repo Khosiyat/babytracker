@@ -51,3 +51,20 @@ class FoodItem(models.Model):
     
     def __str__(self):
         return self.name
+
+
+
+class NutrientGoal(models.Model):
+    age_in_months = models.PositiveIntegerField()
+    
+    # Daily target nutrient values
+    calories = models.FloatField()
+    protein = models.FloatField()
+    fat = models.FloatField()
+    carbs = models.FloatField()
+    vitamin_a = models.FloatField()
+    vitamin_c = models.FloatField()
+    # Add more goals as needed
+
+    def __str__(self):
+        return f"Goals for {self.age_in_months} month(s)"
