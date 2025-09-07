@@ -68,3 +68,29 @@ class NutrientGoal(models.Model):
 
     def __str__(self):
         return f"Goals for {self.age_in_months} month(s)"
+
+
+
+class FeedingRecord(models.Model):
+    baby = models.ForeignKey(Baby, on_delete=models.CASCADE, related_name='feedings')
+    caregiver = models.ForeignKey(Caregiver, on_delete=models.CASCADE)
+    food_item = models.ForeignKey(FoodItem, on_delete=models.CASCADE)
+    amount_ml = models.FloatField()
+    fed_at = models.DateTimeField()
+
+    # Calculated nutrient fields (rounded or decimal fields)
+    calories = models.FloatField(blank=True, null=True)
+    protein = models.FloatField(blank=True, null=True)
+    fat = models.FloatField(blank=True, null=True)
+    carbs = models.FloatField(blank=True, null=True)
+    vitamin_a = models.FloatField(blank=True, null=True)
+    vitamin_c = models.FloatField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        self.calories = self.amount_ml * self.food_item.calories_per_100ml / 100
+        self.protein = self.amount_ml * self.food_item.protein_per_100ml / 100
+        self.fat = self.amount_ml * self.food_item.fat_per_100ml / 100
+        self.carbs = self.amount_ml * self.food_item.carbs_per_100ml / 100
+        self.vitamin_a = self.amount_ml * self.food_item.vitamin_a_per_100ml / 100
+        self.vitamin_c = self.amount_ml * self.food_item.vitamin_c_per_100ml / 100
+        super().save(*args, **kwargs)
