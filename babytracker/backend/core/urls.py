@@ -11,5 +11,6 @@ urlpatterns = [
     path('', include(router.urls)),
     path('baby/<int:baby_id>/summary/', baby_daily_summary),
     path('api/signup/', SignupView.as_view(), name='signup'),
+    path('baby/<int:baby_id>/daily-summary/', DailySummaryWithGoalsAPIView.as_view(), name='daily-summary-with-goals'),
     
 ]
