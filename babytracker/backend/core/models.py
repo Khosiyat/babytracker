@@ -3,14 +3,17 @@ from django.contrib.auth.models import User
 from datetime import date
 
 
+from datetime import date
+
 class Baby(models.Model):
     name = models.CharField(max_length=100)
     birth_date = models.DateField()
-    caregivers = models.ManyToManyField(User)
 
+    @property
     def age_in_months(self):
         today = date.today()
-        return (today.year - self.birth_date.year) * 12 + today.month - self.birth_date.month
+        age = (today.year - self.birth_date.year) * 12 + today.month - self.birth_date.month
+        return age
 
 
 class FoodItem(models.Model):
