@@ -97,3 +97,4 @@ class FeedingRecord(models.Model):
         self.vitamin_a = self.amount_ml * self.food_item.vitamin_a_per_100ml / 100
         self.vitamin_c = self.amount_ml * self.food_item.vitamin_c_per_100ml / 100
         super().save(*args, **kwargs)
+
